@@ -1,0 +1,82 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("Space")
+
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<div class="container">
+
+    <div class="row" id="pwd-container">
+        <div class="col-md-4"></div>
+
+        <div class="col-md-4">
+            <section class="login-form">
+                <form method="post" action="#" role="textbox">
+                    <div id="msg"><ul style="color:red;">@TempData["invalid"]</ul></div>
+
+                    <input type="text" name="Login" placeholder="Login" id="Login" required class="form-control input-lg" />
+
+                    <br />
+                    <input type="password" name="Password" class="form-control input-lg" id="Password" placeholder="Password" required="" />
+                    <br />
+
+                    <div class="pwstrength_viewport_progress"></div>
+
+
+                    <button type="button" name="go" class="btn btn-lg btn-primary btn-block" onclick="check()">Sign in</button>
+
+
+
+                </form>
+            </section>
+        </div>
+
+        <div class="col-md-4"></div>
+
+    </div>
+
+    <p>
+
+        <br>
+        <br>
+
+    </p>
+
+
+</div>
+
+<script type="text/javascript">
+    function check() {
+        $.ajax({
+            type: "POST",
+            data: { Login: $("#Login").val(), Password: $("#Password").val() },
+            url: '/Home/Login',
+            success: function (data) {
+                console.log(data);
+                if (data == false) {
+                    $("#errorMesage").removeClass("hidden")
+                    console.log("not good");
+                    window.location.href = "/Home/Login";
+                }
+                else if (data.IsAdmin == false) {
+                    console.log("Admin is false");
+                    window.location.href = "/User/Index";
+                }
+                else {
+                    console.log("Admin is good");
+                    window.location.href = "/Admin/Index";
+                }
+
+            },
+            error: function () {
+                console.log("ERROR");
+            }
+        });
+    }
+
+</script>

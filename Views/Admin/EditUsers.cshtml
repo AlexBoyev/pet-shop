@@ -1,0 +1,89 @@
+﻿@model WebApplication2.ViewModel.UserViewModel
+@using WebApplication2.Models
+@{
+    /**/
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("Space")
+
+<!DOCTYPE html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Enter</title>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+
+
+</head>
+
+<div>
+
+    <br />
+    <b>Existing Users:</b>
+    <br />
+    <table class="table table-striped">
+        <tr>
+            <td>Name</td>
+            <td>Address</td>
+            <td>Email</td>
+            <td>Phone</td>
+            <td>Login</td>
+            <td>Admin status</td>
+        </tr>
+        @foreach (User obj in Model.Ausers)
+        {
+            <tr>
+                <td>@obj.Name</td>
+                <td>@obj.Address</td>
+                <td>@obj.Email</td>
+                <td>@obj.Phone</td>
+                <td>@obj.Login</td>
+                <td>@obj.IsAdmin</td>
+            </tr>
+        }
+
+    </table>
+
+
+
+</div>
+
+
+@using (Html.BeginForm("DeleteUser", "Admin", FormMethod.Post))
+{
+<div class="form-group">
+    @Html.LabelFor(m => m.Auser.Login)
+    @Html.TextBoxFor(m => m.Auser.Login, new { @placeholder = "Enter your user login that you want to delete", @class = "form-control" }) @*good looking form  *@
+    @Html.ValidationMessageFor(m => m.Auser.Login)
+</div>
+    <div id="msg"><ul style="color:red;"> @TempData["deleteuser"] @TempData["usertnotfound"]</ul></div>
+
+    @Html.AntiForgeryToken(); //to prevent attacks by hackers
+    <button type="submit" class="btn btn-primary">Delete user</button>
+    <br/>
+
+}
+
+@using (Html.BeginForm("AdminUser", "Admin", FormMethod.Post))
+{
+    <div class="form-group">
+
+        @Html.LabelFor(m => m.Auser.Login)
+        @Html.TextBoxFor(m => m.Auser.Login, new { @placeholder = "Enter your user login that you want to promote", @class = "form-control" }) @*good looking form  *@
+        @Html.ValidationMessageFor(m => m.Auser.Login)
+    </div>
+    <div id="msg"><ul style="color:red;"> @TempData["promoteuser"] @TempData["usertnotfound1"]</ul></div>
+    @Html.AntiForgeryToken(); //to prevent attacks by hackers
+    <button type="submit" class="btn btn-primary">Promote user</button>
+
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

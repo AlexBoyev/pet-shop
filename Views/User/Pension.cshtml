@@ -1,0 +1,67 @@
+﻿@model WebApplication2.Models.Pension
+@{
+    /**/
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{ WebApplication2.Models.User user = ViewBag.CurrentUser;}
+@Html.Partial("Space")
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Pension</title>
+</head>
+<body>
+    <h1>Pension</h1>
+    <div>
+        Your dog and cat have a home, even when you are not at home - the calmest experience possible, the closest to your home!
+
+        Boarding in a private home providing warmth, love, walks, nature and great conditions.
+
+        When you travel you can be sure that your dog or cat is in safe and loving hands, and getting constant and caring attention in great conditions without cages.
+        <h2>price per day: 100 nis</h2>
+        <br />
+    </div>
+</body>
+</html>
+
+@using (Html.BeginForm("Pension", "User", FormMethod.Post))
+{
+    @Html.HiddenFor(m => user.Login)
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.PetName)
+        @Html.TextBoxFor(m => m.PetName, new { @placeholder = "Enter your pet name", @class = "form-control" }) @*good looking form  *@
+        @Html.ValidationMessageFor(m => m.PetName)
+    </div>
+
+     <div id="msg"><ul style="color:red;"> @TempData["PetIDExists"] </ul></div>
+    <div class="form-group">
+
+        @Html.LabelFor(m => m.PetID)
+        @Html.TextBoxFor(m => m.PetID, new { @placeholder = "Enter your pet ID", @class = "form-control" }) @*good looking form  *@
+        @Html.ValidationMessageFor(m => m.PetID)
+    </div>
+
+    <div id="msg"><ul style="color:red;"> @TempData["InvalidDay"] </ul></div>
+    <div class="form-group">
+
+        @Html.LabelFor(m => m.Days)
+        @Html.TextBoxFor(m => m.Days, new { @placeholder = "Enter your duration in days", @class = "form-control" }) @*good looking form  *@
+        @Html.ValidationMessageFor(m => m.Days)
+    </div>
+
+
+    @Html.AntiForgeryToken(); //to prevent attacks by hackers
+    <button type="submit" class="btn btn-primary">Add pet to pension</button>
+
+
+
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

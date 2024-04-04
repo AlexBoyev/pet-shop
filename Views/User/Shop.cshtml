@@ -1,0 +1,108 @@
+﻿@model WebApplication2.ViewModel.ShopViewModel
+@using WebApplication2.Models
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("Space")
+
+<!DOCTYPE html>
+
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Enter</title>
+
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    @{ WebApplication2.Models.User user = ViewBag.CurrentUser;}
+    @Html.HiddenFor(m => user.Login)
+
+</head>
+
+    <div>
+
+        <br />
+        <b>Existing Products:</b>
+        <br />
+        <table class="table table-striped">
+            <tr>
+                <td>Product ID</td>
+                <td>Name</td>
+                <td>Supplier</td>
+                <td>Price</td>
+            </tr>
+            @foreach (Shop obj in Model.Products)
+            {
+                <tr>
+                    <td>@obj.ProID</td>
+                    <td>@obj.Name</td>
+                    <td>@obj.Supplier</td>
+                    <td>@obj.Price</td>
+                </tr>
+            }
+
+        </table>
+
+
+
+    </div>
+
+
+ 
+        <div class="row" id="pwd-container">
+            <div class="col-md-4"></div>
+
+            <div class="col-md-4">
+                <section class="login-form">
+                    <form method="post" action="#" role="textbox">
+                        <div id="msg"><ul style="color:red;">@TempData["InvalidInput"]</ul></div>
+                        <input type="text" name="Product ID" placeholder="ProID" id="ProID" required class="form-control input-lg" />
+                        <div class="pwstrength_viewport_progress"></div>
+
+                        <br />
+                        <input type="text" name="Quantity" id="Quantity" placeholder="Quantity" required class="form-control input-lg" />
+                        <br />
+
+                        <div class="pwstrength_viewport_progress"></div>
+
+
+                        <button type="submit" name="go" class="btn btn-lg btn-primary btn-block" onclick="check()">Add To Cart</button>
+
+
+                    </form>
+                </section>
+            </div>
+
+            <div class="col-md-4"></div>
+
+        </div>
+    
+        <script type="text/javascript">
+            function check() {
+                $.ajax({
+                    type: "POST",
+                    data: { ProID: $("#ProID").val(), Quantity: $("#Quantity").val()},
+                    url: '/User/Shop',
+                    success: function (data) {
+                        console.log(data);
+                        if (data == false) {
+                            $("#errorMesage").removeClass("hidden")
+                            console.log("not good");
+                            window.location.href = "/User/Shop";
+                        }
+                        else {
+                            window.location.href = "/User/Shop";
+                        }
+                    },
+                    error: function () {
+                        console.log("ERROR");
+                    }
+                });
+            }
+
+        </script>
+
+
+

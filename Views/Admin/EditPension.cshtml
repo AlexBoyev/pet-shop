@@ -1,0 +1,48 @@
+﻿@model WebApplication2.ViewModel.PensionViewModel
+@using WebApplication2.Models
+@{
+    /**/
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("Space")
+
+<!DOCTYPE html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Enter</title>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+
+
+</head>
+
+@{ 
+    WebGrid obj = new WebGrid(Model.userPets);
+}
+@obj.GetHtml()
+
+
+@using (Html.BeginForm("DeletePension", "Admin", FormMethod.Post))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.userPet.PetID)
+        @Html.TextBoxFor(m => m.userPet.PetID, new { @placeholder = "Enter your pet login ID you want to delete", @class = "form-control" }) @*good looking form  *@
+        @Html.ValidationMessageFor(m => m.userPet.PetID)
+    </div>
+    <div id="msg"><ul style="color:red;"> @TempData["deletepet"] @TempData["pettnotfound"]</ul></div>
+
+    @Html.AntiForgeryToken(); //to prevent attacks by hackers
+    <button type="submit" class="btn btn-primary">Delete pet</button>
+    <br />
+
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

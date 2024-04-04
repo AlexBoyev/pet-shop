@@ -1,0 +1,113 @@
+﻿@model WebApplication2.ViewModel.ShopViewModel
+@using WebApplication2.Models
+@{
+    /**/
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("Space")
+
+<!DOCTYPE html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Enter</title>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+
+
+</head>
+
+<div>
+
+    <br />
+    <b>Existing Products:</b>
+    <br />
+    <table class="table table-striped">
+        <tr>
+            <td>Product ID</td>
+            <td>Name</td>
+            <td>Supplier</td>
+            <td>Price</td>
+        </tr>
+        @foreach (Shop obj in Model.Products)
+        {
+            <tr>
+                <td>@obj.ProID</td>
+                <td>@obj.Name</td>
+                <td>@obj.Supplier</td>
+                <td>@obj.Price</td>
+            </tr>
+        }
+
+    </table>
+
+
+
+</div>
+
+
+
+@using (Html.BeginForm("Submit", "Admin", FormMethod.Post))
+{
+    <div class="form-group">
+
+        @Html.LabelFor(m => m.Product.ProID)
+        @Html.TextBoxFor(m => m.Product.ProID, new { @placeholder = "Enter your product ID", @class = "form-control" }) @*good looking form  *@
+        @Html.ValidationMessageFor(m => m.Product.ProID)
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Product.Name)
+        @Html.TextBoxFor(m => m.Product.Name, new { @placeholder = "Enter product name", @class = "form-control" }) @*good looking form  *@
+        @Html.ValidationMessageFor(m => m.Product.Name)
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Product.Supplier)
+        @Html.TextBoxFor(m => m.Product.Supplier, new { @placeholder = "Enter product supplier", @class = "form-control" }) @*good looking form  *@
+        @Html.ValidationMessageFor(m => m.Product.Supplier)
+    </div>
+
+
+    <div id="msg"><ul style="color:red;"> @TempData["Invalidprice"] </ul></div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Product.Price)
+        @Html.TextBoxFor(m => m.Product.Price, new { @placeholder = "Enter product price", @class = "form-control" }) @*good looking form  *@
+        @Html.ValidationMessageFor(m => m.Product.Price)
+    </div>
+
+
+
+    <div id="msg"><ul style="color:red;"> @TempData["productadded"] </ul></div>
+
+    @Html.AntiForgeryToken(); //to prevent attacks by hackers
+    <button type="submit" class="btn btn-primary">Add product</button>
+
+}
+
+
+@using (Html.BeginForm("DeleteShop", "Admin", FormMethod.Post))
+{
+    <div class="form-group">
+
+        @Html.LabelFor(m => m.Product.ProID)
+        @Html.TextBoxFor(m => m.Product.ProID, new { @placeholder = "Enter your product ID that you want to delete", @class = "form-control" }) @*good looking form  *@
+        @Html.ValidationMessageFor(m => m.Product.ProID)
+    </div>
+    <div id="msg"><ul style="color:red;"> @TempData["productdeleted"] @TempData["productnotfound"] </ul></div>
+
+    @Html.AntiForgeryToken(); //to prevent attacks by hackers
+    <button type="submit" class="btn btn-primary">Delete product</button>
+
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
